@@ -6,35 +6,31 @@ class  App extends Component {
     constructor() {
         super();
         this.state = {
-           frontend: [
-               {
-                   name: 'Angular',
-                   version: '13.1.1'
-               },
-               {
-                   name: 'React',
-                   version: '17.0.2'
-               },
-               {
-                   name: 'Vue',
-                   version: '3.2.23'
-               },
-               {
-                   name: 'Ember',
-                   version: '1.13.11'
-               },
-               {
-                   name: 'Backbone',
-                   version: '1.3.3'
-               }
-           ]
+           people: []
         };
     }
 
-  render() {
-    return <div className='App'>
-        {this.state.frontend.map((framework) => <h1>{framework.name.toUpperCase()}</h1>)}
-    </div>
+    componentDidMount() {
+      fetch("https://myjson.dit.upm.es/api/bins/b1sv")
+          .then((res) => res.json())
+          .then((json) => {
+              this.setState(
+                  ()=> {
+                      return { people: json};
+                  },
+                  ()=> {
+                      console.log(this.state)
+                  }
+              );
+          })
+    }
+
+    render() {
+    return <>
+        <div className='App'>
+            {this.state.people.map((person) => {return <h1 key={person.id}>{person.name.toUpperCase()}</h1>;})}
+        </div>
+    </>
   }
 }
 
